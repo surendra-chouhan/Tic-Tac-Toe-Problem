@@ -40,6 +40,23 @@ public class TicTacToe {
 		System.out.println (board[7] + " | " + board[8] + " | " + board[9]);
 	}
 	
+	public static void makeMove(){
+
+		Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the position you want to move to : "
+        					+ "\nPosition must be betwween 1 to 9");
+        int position = sc.nextInt();
+
+        //for(int i = 1; i < 10; i++){
+        if(position >= 1 && position <= 9)
+        	board[position] = PlayerLetter.charAt(0);
+        else
+        	System.out.println("Position value is wrong");
+        
+        showBoard();
+	}
+
+	
 	public static void main(String[] args) {
 		System.out.println("Welocme to Tic-Tac-Toe program");
 		
@@ -57,5 +74,6 @@ public class TicTacToe {
 		System.out.println("Computer is : " + ComputerLetter);
 	
 		showBoard();
+        makeMove();
 	}
 }
