@@ -1,5 +1,4 @@
 
-import java.util.*;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -32,20 +31,31 @@ public class TicTacToe {
 		}
 		return ComputerLetter;
 	}
+	
+	public static void showBoard() {
+		System.out.println (board[1] + " | " + board[2] + " | " + board[3]);
+		System.out.println("----------");
+		System.out.println (board[4] + " | " + board[5] + " | " + board[6]);
+		System.out.println("----------");
+		System.out.println (board[7] + " | " + board[8] + " | " + board[9]);
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welocme to Tic-Tac-Toe program");
 		
 		
-		TicTacToe tictac = new TicTacToe();
+		//TicTacToe tictac = new TicTacToe();
 		board = new char[10];//createBoard();
 		
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("Please Choose X or O");
-		String option = sc.next();		
+		String option = sc.next().toUpperCase();		
 		
-		tictac.choose(option);
+		choose(option);
 		System.out.println("Player is : " + PlayerLetter);
 		System.out.println("Computer is : " + ComputerLetter);
+	
+		showBoard();
 	}
 }
