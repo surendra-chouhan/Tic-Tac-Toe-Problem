@@ -41,17 +41,43 @@ public class TicTacToe {
 		System.out.println (board[7] + " | " + board[8] + " | " + board[9]);
 	}
 	
+	public static void Toss() {
+		System.out.println("Lets Toss! \nEnter 1 for Heads and 2 for Tails");
+		int opt = sc.nextInt();
+		int toss = (int)Math.floor(Math.random() * 10) %2;
+		
+		if(opt == toss) {
+			System.out.println("Player won the toss! So player starts the game.");
+			makePlayerMove();
+			makeComputerMove();
+		}
+		else {
+			System.out.println("Computer won the toss! So computer starts the game.");
+			makeComputerMove();
+			makePlayerMove();
+		}
+		
+	}
+	
 	public static void makePlayerMove(){
 
 		System.out.println("Enter the position you want to move to : "
         					+ "\nPosition must be betwween 1 to 9");
         int position = sc.nextInt();
 
-        if(position >= 1 && position <= 9)
+        if(position >= 1 && position <= 9 && board[position] == 0) {
         	board[position] = PlayerLetter.charAt(0);
-        else
-        	System.out.println("Position value is wrong");
-        
+        }
+        else if (position >= 1 && position <= 9 && board[position] != 0){
+        	System.out.println("Position is taken. \n Enter again");
+        	position = sc.nextInt();
+        	if(position >= 1 && position <= 9 && board[position] == 0)
+        		board[position] = PlayerLetter.charAt(0);
+        }
+        else {
+        	System.out.println("Invalid Position.");
+        }
+        	
         showBoard();
 	}
 	
@@ -61,6 +87,13 @@ public class TicTacToe {
 		if(board[cposition] == 0 ) {
 			System.out.println("Computer will put " + ComputerLetter.charAt(0) + " at position : " + cposition);
 			board[cposition] = ComputerLetter.charAt(0);
+		}
+		else if(board[cposition] != 0){
+			cposition = (int)Math.floor(Math.random() * (10-1))+1;
+			if(board[cposition] == 0 ) {
+				System.out.println("Computer will put " + ComputerLetter.charAt(0) + " at position : " + cposition);
+				board[cposition] = ComputerLetter.charAt(0);
+			}
 		}
 		
 		showBoard();
@@ -81,7 +114,6 @@ public class TicTacToe {
 		System.out.println("Computer is : " + ComputerLetter);
 	
 		showBoard();
-        makePlayerMove();
-        makeComputerMove();
+		Toss();
 	}
 }
