@@ -13,30 +13,29 @@ public class TicTacToe {
 	static ArrayList<int[]> checkCondition = new ArrayList<>();
 	
 	public static void conditionForWin() {
-		int[] row1 = {1, 2, 3};
-		int[] row2 = {4, 5, 6};
-		int[] row3 = {7, 8, 9};
-		int[] col1 = {1, 4, 7};
-		int[] col2 = {2, 5, 8};
-		int[] col3 = {3, 6, 9};
-		int[] diag1 = {1, 5, 9};
-		int[] diag2 = {3, 5, 7};
+		int[] cond0 = {1, 2, 3};
+		int[] cond1 = {4, 5, 6};
+		int[] cond2 = {7, 8, 9};
+		int[] cond3 = {1, 4, 7};
+		int[] cond4 = {2, 5, 8};
+		int[] cond5 = {3, 6, 9};
+		int[] cond6 = {1, 5, 9};
+		int[] cond7 = {3, 5, 7};
 
-		checkCondition.add(row1);
-		checkCondition.add(row2);
-		checkCondition.add(row3);
-		checkCondition.add(col1);
-		checkCondition.add(col2);
-		checkCondition.add(col3);
-		checkCondition.add(diag1);
-		checkCondition.add(diag2);
+		checkCondition.add(cond0);
+		checkCondition.add(cond1);
+		checkCondition.add(cond2);
+		checkCondition.add(cond3);
+		checkCondition.add(cond4);
+		checkCondition.add(cond5);
+		checkCondition.add(cond6);
+		checkCondition.add(cond7);
 	}
 	
-	static char[] createBoard() {
+	public static void createBoard() {
 		for(int i = 1; i < 10; i++) {
 			board[i] = ' ';
 		}
-		return board;
 	}
 
 	public static void choose() {
@@ -63,6 +62,21 @@ public class TicTacToe {
 		System.out.println (board[7] + " | " + board[8] + " | " + board[9]);
 	}
 	
+	public static void makePlayerMove(){
+
+		System.out.println("Enter the position you want to move to : "
+        					+ "\nPosition must be betwween 1 to 9");
+        int position = sc.nextInt();
+
+        if (board[position] != ' '){
+        	System.out.println("Position is taken. \n Enter again");
+        	makePlayerMove();
+        }
+        else {
+        	board[position] = PlayerLetter;
+        }
+    }
+
 	public static void Toss() {
 		System.out.println("Lets Toss! \nEnter 1 for Heads and 2 for Tails");
 		int opt = sc.nextInt();
@@ -78,22 +92,6 @@ public class TicTacToe {
 		}
 	}
 	
-	public static void makePlayerMove(){
-
-		System.out.println("Enter the position you want to move to : "
-        					+ "\nPosition must be betwween 1 to 9");
-        int position = sc.nextInt();
-
-        if (board[position] != ' '){
-        	System.out.println("Position is taken. \n Enter again");
-        	makePlayerMove();
-        }
-        else {
-        	board[position] = PlayerLetter;
-            //showBoard();
-        }
-    }
-
 	public static char checkWinner() {
 		final int WIN_CONDITION = 3;
 	
@@ -182,6 +180,20 @@ public class TicTacToe {
 		return false;
 	}
 	
+	public static boolean block() {
+
+		if (con(PlayerLetter)) {
+			for (int l = 0; l < checkCondition.get(index).length; l++) {
+				if (board[checkCondition.get(index)[l]] == ' ') {
+					board[checkCondition.get(index)[l]] = ComputerLetter;
+						checkCondition.remove(index);
+							return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welocme to Tic-Tac-Toe program");
 				
@@ -194,4 +206,5 @@ public class TicTacToe {
 		Toss();
 		turn();
 	}
+	
 }
