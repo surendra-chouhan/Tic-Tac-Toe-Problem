@@ -148,11 +148,6 @@ public class TicTacToe {
 		}
 	}
 	
-	public static void makeComputerMove() {
-		if(computerWinning()) {
-		}
-	}
-	
 	public static boolean con(char letter) {
 		for(int index = 0; index < checkCondition.size(); index++) {
 			int sum = 0;
@@ -193,6 +188,30 @@ public class TicTacToe {
 		}
 		return false;
 	}
+	
+	public static void computerMove() {
+		int[] corner = {1, 3, 7, 9};
+
+			boolean check = true;
+				for (int l=0; l<corner.length; l++) {
+					if(board[corner[l]] == ' ') {
+						board[corner[l]] = ComputerLetter;
+						check = false;
+						break;
+					}
+				}
+	}
+	
+	public static void makeComputerMove() {
+		if (computerWinning()) {
+		}
+		else if(block()) {
+		}
+		else{
+			computerMove();
+		}
+	}
+
 	
 	public static void main(String[] args) {
 		System.out.println("Welocme to Tic-Tac-Toe program");
