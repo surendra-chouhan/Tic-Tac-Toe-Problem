@@ -1,36 +1,57 @@
 
-import java.util.Scanner;
+import java.util.*;
 
 public class TicTacToe {
-	public static char[] board;
-	public static String PlayerLetter;
-	public static String ComputerLetter;
+	static char[] board = new char[10];
+	static char PlayerLetter;
+	static char ComputerLetter;
+	static int count;
+	static int chance;
 	static Scanner sc = new Scanner(System.in);
 	
-	static char[] createBoard() {
+	static ArrayList<int[]> checkCondition = new ArrayList<>();
+	
+	public static void conditionForWin() {
+		int[] row1 = {1, 2, 3};
+		int[] row2 = {4, 5, 6};
+		int[] row3 = {7, 8, 9};
+		int[] col1 = {1, 4, 7};
+		int[] col2 = {2, 5, 8};
+		int[] col3 = {3, 6, 9};
+		int[] diag1 = {1, 5, 9};
+		int[] diag2 = {3, 5, 7};
 
-		char[] board = new char[10];
-		
+		checkCondition.add(row1);
+		checkCondition.add(row2);
+		checkCondition.add(row3);
+		checkCondition.add(col1);
+		checkCondition.add(col2);
+		checkCondition.add(col3);
+		checkCondition.add(diag1);
+		checkCondition.add(diag2);
+	}
+	
+	static char[] createBoard() {
 		for(int i = 1; i < 10; i++) {
 			board[i] = ' ';
 		}
 		return board;
 	}
 
-	public static String choose(String option) {
+	public static void choose() {
+		System.out.println("Choose X or O :");
+		PlayerLetter = sc.next().toUpperCase().charAt(0);
 		
-		if(option.equals("X")) { 
-			PlayerLetter = "X";
-			ComputerLetter = "O";
+		if(PlayerLetter == 'X') {
+			ComputerLetter = 'O';
 		}
-		else if(option.equals("O")) {
-			ComputerLetter = "X";
-			PlayerLetter = "O";
+		else if(PlayerLetter == 'O') {
+			ComputerLetter = 'X';
 		}
 		else {
-			System.out.println("Incorrect Input");
+			System.out.println("Invalid Input");
+			choose();
 		}
-		return ComputerLetter;
 	}
 	
 	public static void showBoard() {
@@ -44,19 +65,16 @@ public class TicTacToe {
 	public static void Toss() {
 		System.out.println("Lets Toss! \nEnter 1 for Heads and 2 for Tails");
 		int opt = sc.nextInt();
-		int toss = (int)Math.floor(Math.random() * 10) %2;
-		
-		if(opt == toss) {
-			System.out.println("Player won the toss! So player starts the game.");
-			makePlayerMove();
-			makeComputerMove();
+		int chance = (int)(Math.random() * 2 + 1);
+		 
+		if(opt == chance) {
+			System.out.println("Player won the toss!");
+			count = 0;
 		}
 		else {
-			System.out.println("Computer won the toss! So computer starts the game.");
-			makeComputerMove();
-			makePlayerMove();
+			System.out.println("Computer won the toss!");
+			count = 1;
 		}
-		
 	}
 	
 	public static void makePlayerMove(){
@@ -65,55 +83,83 @@ public class TicTacToe {
         					+ "\nPosition must be betwween 1 to 9");
         int position = sc.nextInt();
 
-        if(position >= 1 && position <= 9 && board[position] == 0) {
-        	board[position] = PlayerLetter.charAt(0);
-        }
-        else if (position >= 1 && position <= 9 && board[position] != 0){
+        if (position >= 1 && position <= 9 && board[position] != ' '){
         	System.out.println("Position is taken. \n Enter again");
-        	position = sc.nextInt();
-        	if(position >= 1 && position <= 9 && board[position] == 0)
-        		board[position] = PlayerLetter.charAt(0);
+        	makePlayerMove();
         }
         else {
-        	System.out.println("Invalid Position.");
+        	board[position] = PlayerLetter;
+            showBoard();
         }
-        	
-        showBoard();
-	}
+    }
+
+	public static char checkWinner() {
+		final int WIN_CONDITION = 3;
 	
-	public static void makeComputerMove() {
-		int cposition = (int)Math.floor(Math.random() * (10-1))+1;
-		
-		if(board[cposition] == 0 ) {
-			System.out.println("Computer will put " + ComputerLetter.charAt(0) + " at position : " + cposition);
-			board[cposition] = ComputerLetter.charAt(0);
-		}
-		else if(board[cposition] != 0){
-			cposition = (int)Math.floor(Math.random() * (10-1))+1;
-			if(board[cposition] == 0 ) {
-				System.out.println("Computer will put " + ComputerLetter.charAt(0) + " at position : " + cposition);
-				board[cposition] = ComputerLetter.charAt(0);
+		for(int index = 0; index < checkCondition.size(); index++) {
+			int addX = 0;
+			int addO = 0;
+			for(int i =0; i < checkCondition.get(index).length; i++) {
+				if(board[checkCondition.get(index)[i]] == 'X') {
+					addX += 1;
+					if(addX == WIN_CONDITION)
+						return 'X';
+				}
+				else if(board[checkCondition.get(index)[i]] == 'O') {
+					addO += 1;
+					if(addO == WIN_CONDITION)
+						return 'O';					
+				}
 			}
 		}
-		
-		showBoard();
-	}
+		return ' ';
+	}	
 
+	public static boolean tie() {
+		for(int k = 1; k < 10; k++) {
+			if(board[k] == ' ')
+				return false;
+		}
+		return true;
+	}
+	
+	public static void turn() {
+		while(true){
+			
+			if(checkWinner() == 'X' || checkWinner() == 'O') {
+				System.out.println((PlayerLetter == checkWinner())?"Player Wins":"Computer Wins");
+				break;
+			}
+			else if (tie()) {
+				System.out.println("It's a tie");
+				break;
+			}
+			else{
+				if(count%2 == chance) {
+					System.out.println("Your Turn");
+					makePlayerMove();
+					showBoard();
+				}
+//				else {
+//					System.out.println("Computer's Turn");
+//					
+//				}
+				count++;
+			}
+		}
+	}
 	
 	public static void main(String[] args) {
 		System.out.println("Welocme to Tic-Tac-Toe program");
-		
-		
-		board = new char[10];
-		
-		System.out.println("Please Choose X or O");
-		String option = sc.next().toUpperCase();		
-		
-		choose(option);
-		System.out.println("Player is : " + PlayerLetter);
-		System.out.println("Computer is : " + ComputerLetter);
-	
+				
+		TicTacToe tictactoeGame = new TicTacToe();
+		conditionForWin();
+		createBoard();
+		choose();
+		System.out.println("Computer Letter : " + ComputerLetter);
+		System.out.println("Player Letter : " + PlayerLetter);
 		showBoard();
 		Toss();
+		turn();
 	}
 }
