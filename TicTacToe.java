@@ -191,6 +191,8 @@ public class TicTacToe {
 	
 	public static void computerMove() {
 		int[] corner = {1, 3, 7, 9};
+		int centre = 5;
+		int[] sides = {2, 4, 6, 8};
 
 			boolean check = true;
 				for (int l=0; l<corner.length; l++) {
@@ -200,6 +202,22 @@ public class TicTacToe {
 						break;
 					}
 				}
+					
+					if (check) {
+						if (board[centre] == ' ') {
+							board[centre] = ComputerLetter;
+							check = false;
+						}
+					}
+					
+					if (check) {
+						for(int l=0; l<sides.length; l++) {
+							if (board[sides[l]] == ' ') {
+								board[sides[l]] = ComputerLetter;
+								break;
+							}
+						}
+					}
 	}
 	
 	public static void makeComputerMove() {
