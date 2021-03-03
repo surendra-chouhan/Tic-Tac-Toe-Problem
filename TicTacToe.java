@@ -2,11 +2,12 @@
 import java.util.*;
 
 public class TicTacToe {
-	static char[] board = new char[10];
+	static char board[] = new char[10];
 	static char PlayerLetter;
 	static char ComputerLetter;
-	static int count;
+	static int count=0;
 	static int chance;
+	static int index;
 	static Scanner sc = new Scanner(System.in);
 	
 	static ArrayList<int[]> checkCondition = new ArrayList<>();
@@ -83,13 +84,13 @@ public class TicTacToe {
         					+ "\nPosition must be betwween 1 to 9");
         int position = sc.nextInt();
 
-        if (position >= 1 && position <= 9 && board[position] != ' '){
+        if (board[position] != ' '){
         	System.out.println("Position is taken. \n Enter again");
         	makePlayerMove();
         }
         else {
         	board[position] = PlayerLetter;
-            showBoard();
+            //showBoard();
         }
     }
 
@@ -125,7 +126,6 @@ public class TicTacToe {
 	
 	public static void turn() {
 		while(true){
-			
 			if(checkWinner() == 'X' || checkWinner() == 'O') {
 				System.out.println((PlayerLetter == checkWinner())?"Player Wins":"Computer Wins");
 				break;
@@ -140,19 +140,51 @@ public class TicTacToe {
 					makePlayerMove();
 					showBoard();
 				}
-//				else {
-//					System.out.println("Computer's Turn");
-//					
-//				}
+				else {
+					System.out.println("Computer's Turn");
+					makeComputerMove();
+					showBoard();
+				}
 				count++;
 			}
 		}
 	}
 	
+	public static void makeComputerMove() {
+		if(computerWinning()) {
+		}
+	}
+	
+	public static boolean con(char letter) {
+		for(int index = 0; index < checkCondition.size(); index++) {
+			int sum = 0;
+			for(int j = 0; j < checkCondition.get(index).length; j++) {
+				if(board[checkCondition.get(index)[j]] == letter) {
+					sum = sum + 1;
+					if (sum == 2) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static boolean computerWinning() {
+		if(con(ComputerLetter)) {
+			for (int l = 0; l < checkCondition.get(index).length; l++) {
+				if(board[checkCondition.get(index)[1]] == ' ') {
+					board[checkCondition.get(index)[1]] = ComputerLetter;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welocme to Tic-Tac-Toe program");
 				
-		TicTacToe tictactoeGame = new TicTacToe();
 		conditionForWin();
 		createBoard();
 		choose();
