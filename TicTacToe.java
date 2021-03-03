@@ -242,10 +242,10 @@ public class TicTacToe {
 			showBoard();
 			Toss();
 			turn();
-			System.out.println("You Want To Play Again?? Please enter Yes or No.");
+			System.out.println("Do You Want To Play Again?? Please enter Yes or No.");
 			check = sc.next().toUpperCase();
 		}
-		System.out.println("OK Thanks For Playing");
+		System.out.println("Thanks For Playing");
 	}
 
 	
